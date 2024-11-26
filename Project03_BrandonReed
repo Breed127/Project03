@@ -1,0 +1,38 @@
+def generate_schedule(caregivers, year, month):
+    num_days = calendar.monthrange(year, month)[1]
+    schedule = {}
+    for day in range(1, num_days + 1):
+        day_of_week = day % 7 or 7  # Get the weekday index
+        available_caregivers = [
+            name for name, details in caregivers.items()
+            if details["availability"][day_of_week]["7:00AM - 1:00PM"] != "unavailable"
+        ]
+        morning_shift = available_caregivers[0] if available_caregivers else None
+
+        available_caregivers = [
+            name for name, details in caregivers.items()
+            if details["availability"][day_of_week]["1:00PM - 7:00PM"] != "unavailable"
+        ]
+        afternoon_shift = available_caregivers[0] if available_caregivers else None
+
+        schedule[day] = {
+            "7:00AM - 1:00PM": morning_shift,
+            "1:00PM - 7:00PM": afternoon_shift
+        }
+    return schedule
+def calculate_payroll(caregivers, schedule):
+    for day, shifts in schedule.items():
+        for shift, caregiver_name in shifts.items():
+            if caregiver_name:
+                caregivers[caregiver_name]["hours"] = caregivers[caregiver_name].get("hours", 0) + 6  # 6 hours per shift
+    payroll_report = "Payroll Report\n\n"
+    total_pay = 0
+    for name, details in caregivers.items():
+        hours = details.get("hours", 0)
+        pay = hours * details["rate"]
+        total_pay += pay
+        payroll_report += f"{name}: {hours} hours, ${pay:.2f}\n"
+    payroll_report += f"\nTotal Pay: ${total_pay:.2f}"
+    with open("payroll_report.txt", "w") as file:
+            file.write(payroll_report)
+        print("Payroll report saved as 'payroll_report.txt'")
