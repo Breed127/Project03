@@ -1,0 +1,8 @@
+if __name__ == "__main__":
+    year = int(input("Enter the year: "))
+    month = int(input("Enter the month (1-12): "))
+    caregivers = create_caregivers()
+    caregivers = update_availability(caregivers)
+    schedule = generate_schedule(caregivers, year, month)
+    display_schedule_as_html(schedule, year, month)
+    calculate_payroll(caregivers, schedule)
