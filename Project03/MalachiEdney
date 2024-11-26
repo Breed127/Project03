@@ -1,0 +1,34 @@
+import calendar
+# Caregiver attributes and availability
+def create_caregivers():
+    caregivers = {
+        "Alice": {"phone": "123-456-7890", "email": "alice@example.com", "rate": 20, "availability": create_default_availability()},
+        "Bob": {"phone": "234-567-8901", "email": "bob@example.com", "rate": 20, "availability": create_default_availability()},
+        "Charlie": {"phone": "345-678-9012", "email": "charlie@example.com", "rate": 20, "availability": create_default_availability()},
+        "David": {"phone": "456-789-0123", "email": "david@example.com", "rate": 20, "availability": create_default_availability()},
+        "Eve": {"phone": "567-890-1234", "email": "eve@example.com", "rate": 20, "availability": create_default_availability()},
+        "Frank": {"phone": "678-901-2345", "email": "frank@example.com", "rate": 20, "availability": create_default_availability()},
+        "Grace": {"phone": "789-012-3456", "email": "grace@example.com", "rate": 20, "availability": create_default_availability()},
+        "Hannah": {"phone": "890-123-4567", "email": "hannah@example.com", "rate": 20, "availability": create_default_availability()},
+    }
+    return caregivers
+def create_default_availability():
+    availability = {}
+    for day in range(1, 8):  # 7 days in a week
+        availability[day] = {
+            "7:00AM - 1:00PM": "available",
+            "1:00PM - 7:00PM": "available"
+        }
+    return availability
+def update_availability(caregivers):
+    for name, details in caregivers.items():
+        print(f"\nUpdating availability for {name}")
+        for day in range(1, 8):
+            print(f"Day {calendar.day_name[day - 1]}")
+            morning_status = input(f"Morning shift (7:00AM - 1:00PM) - Enter 'preferred', 'available', or 'unavailable' (default is 'available'): ").strip().lower()
+            if morning_status in ["preferred", "available", "unavailable"]:
+                details["availability"][day]["7:00AM - 1:00PM"] = morning_status
+            afternoon_status = input(f"Afternoon shift (1:00PM - 7:00PM) - Enter 'preferred', 'available', or 'unavailable' (default is 'available'): ").strip().lower()
+            if afternoon_status in ["preferred", "available", "unavailable"]:
+                details["availability"][day]["1:00PM - 7:00PM"] = afternoon_status
+    return caregivers
